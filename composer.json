@@ -1,0 +1,7 @@
+{
+    "require": {
+        "kornrunner/blurhash": "^1.2",
+      "ext-curl": "*",
+      "ext-json": "*"
+    }
+}
