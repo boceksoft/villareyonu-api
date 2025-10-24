@@ -77,7 +77,7 @@ define("PanelUrl","https://www.villareyonu.com/boceksoft-vr-v2");
 return [
     'db' => [
         'name' => 'villareyonu',
-        'host' => 'localhost',
+        'host' => '10.105.10.31',
         'user' => 'villareyonu',
         'pass' => 'villareyonu*-123'
     ],

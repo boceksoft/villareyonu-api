@@ -4,3 +4,4 @@
 //
 //Payment::Success($ReservationNumber);
 
+echo "Test Controller";
