@@ -132,7 +132,7 @@ class Home
 
 
 
-        $result["Banners"]=Page::GetByCat(1432,"/");
+        $result["Banners"]=Page::GetByCat(496,"/");
 
         $result["rez_tel"] = $qsql["rez_tel"];
 
