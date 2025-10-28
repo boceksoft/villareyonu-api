@@ -128,7 +128,7 @@ class Product
 
 
                     if ($toplam_gun<$gh["mingece"] && $DisableRules==0){
-                        $query = $db->prepare("select * from kisasureli3('".$date1->format('Y-m-d')."','".$date2->format('Y-m-d')."',$EntityId, '1,2,3,4,5,6') as kisasureli where tarih='".$date1->format('Y-m-d')."' and tarih2='".$date2->format('Y-m-d')."' ");
+                        $query = $db->prepare("select * from dbo.kisasureli3('".$date1->format('Y-m-d')."','".$date2->format('Y-m-d')."',$EntityId, '1,2,3,4,5,6') as kisasureli where tarih='".$date1->format('Y-m-d')."' and tarih2='".$date2->format('Y-m-d')."' ");
                         $query->execute();
                         $kontrol = $query->fetchAll(PDO::FETCH_ASSOC);
                         if (!$kontrol){
@@ -603,6 +603,40 @@ class Product
     }
 
 
+    static function get_todays_discounted_product()
+    {
+        $query = "select fiyat.fiyat,
+               (fiyat.fiyat / 100 * (100 - i.oran)) as indirimliFiyat,
+               isnull(i.sahte_oran, 0)              as sahte_oran,
+               i.tarih1,
+               i.tarih2,
+               i.oran,
+               h.id,
+               h.evkodu,
+               h.doviz,
+               h.baslik,
+               dbo.FnRandomSplit(h.resim, ',')      as resim,
+               h.title,
+               h.url,
+               h.kisi,
+               h.banyo,
+               h.yatak_odasi,
+               d2.baslik + ' / ' + d1.baslik        as bolgebaslik
+        from indirimler i
+                 inner join homes h on h.id = i.emlak
+                 inner join destinations d1 on d1.id = h.emlak_bolgesi
+                 inner join destinations d2 on d2.id = d1.cat
+                 inner join destinations d3 on d3.id = d2.cat
+                 cross apply(select dbo.Fn_yenifiyathesapla_sezon(convert(date, i.tarih1, 103),
+                                                                  dateadd(day, 1, convert(date, i.tarih1, 103)), h.id,
+                                                                  1) as fiyat) as fiyat
+        where i.vitrin = 1
+          and convert(date, getdate(), 103) between convert(date, i.showDate1, 103) and convert(date, i.showDate2, 103)";
 
+        $stmt = db()->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
 
 }

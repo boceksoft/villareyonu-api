@@ -13,7 +13,7 @@ class Home
 
         $query = $db->prepare("
             select t.baslik".UZANTI." as baslik,t.id,
-            t.icon as icon,
+            t.icon as icon, t.resim as resim,
             '/'+t.url".UZANTI." as url, 
             t.title".UZANTI." as title,r.* from tip t 
             inner join Routing r on r.EntityId=t.id and r.RoutingTypeId='ProductCategory' and r.site=1 
@@ -43,11 +43,11 @@ class Home
         $result["canonical"]=$qsql["domain"];
 
         if (SITE == 2){
-            $result["faq"]["data"] = Faq::GetByPageId(35,5);
-            $result["faq"]["page"] = Page::GetById(35);
+            $result["faq"]["data"] = Faq::GetByPageId(289,5);
+            $result["faq"]["page"] = Page::GetById(289);
         }else{
-            $result["faq"]["data"] = Faq::GetByPageId(321,5);
-            $result["faq"]["page"] = Page::GetById(321);
+            $result["faq"]["data"] = Faq::GetByPageId(328,5);
+            $result["faq"]["page"] = Page::GetById(328);
         }
 
         $sql = "select filename,aciklama,aciklama2,aciklama3 from upload where islm='slider' and site=".SITE." order by sira";
@@ -65,6 +65,7 @@ class Home
 
         $result["modal"] = ProductCategory::GetById(14);
 
+        $result["discounted_villa"] = Product::get_todays_discounted_product();
 
 
         //Haftanın Villaları

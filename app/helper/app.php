@@ -310,4 +310,10 @@ function SiteUrl($url = "",$Localhost=false)
     return DOMAIN . DILURL . "/" . ltrim($url, "/");
 }
 
+function db()
+{
+    global $db;
+    return $db;
+}
+
 
