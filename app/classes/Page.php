@@ -56,7 +56,7 @@ class Page
     public static function GetByCat ($id,$urlEk=null) {
         global $db;
         $id = self::Mapping($id);
-        $query = $db->prepare("select id,title,baslik,'$urlEk'+url as url,aktif,kisa_icerik,kisa_baslik from sayfalar".UZANTI." where cat=:id and aktif=1");
+        $query = $db->prepare("select id,title,resim,baslik,'$urlEk'+url as url,aktif,kisa_icerik,kisa_baslik from sayfalar".UZANTI." where cat=:id and aktif=1");
         $query->execute(["id"=>$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
 
