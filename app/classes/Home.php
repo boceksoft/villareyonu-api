@@ -64,13 +64,17 @@ class Home
 
 
         $result["modal"] = ProductCategory::GetById(14);
-
         $result["discounted_villa"] = Product::get_todays_discounted_product();
 
 
         //Haftanın Villaları
-        $First = Page::GetById(7,"/");
-        $First["key"]="firsat";
+        if (SITE == 2){
+            $First = Page::GetById(591,"/");
+        }else{
+            $First = Page::GetById(498,"/");
+        }
+
+        $First["key"]="vitrin";
 
         //Sizin İçin Seçtiklerimiz
         if (SITE == 2){
@@ -95,7 +99,7 @@ class Home
         if ($Second["aktif"])
             $HomeContent[] = $Second;
 
-        $query = $db->prepare("select id,baslik".UZANTI." as baslik,title".UZANTI." as title,url,concat('tip_',id) as [key],kisa_icerik".UZANTI." as kisa_icerik from tip where aktif=1 and vitrin".UZANTI."=1 order by siralama");
+        $query = $db->prepare("select id,baslik".UZANTI." as baslik,title".UZANTI." as title,url,concat('tip_',id) as [key],kisa_icerik".UZANTI." as kisa_icerik from tip where aktif=1 and page_tab_bit".UZANTI."=1 order by siralama");
         $query->execute();
         $ProductTypes = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -122,6 +126,7 @@ class Home
 
         $result["static"]["GetOffer"] = Page::GetById("13","/");
         $result["static"]["Reviews"] = Page::GetById("11","/");
+        $result["static"]["Reviews"]["data"] = Reviews::GetHomeReviews();
         $result["static"]["Destinations"] = Page::GetById("8","/");
         $popup = Page::GetById("1355", '/');
 
@@ -146,10 +151,13 @@ class Home
         select top 10 d.baslik".UZANTI." as baslik,d.id,
         replace(replace(replace(isnull(d.resim".UZANTI.",''),' ','-'),'ı','i'),N'ş','s') as resim,
         r.EntityId,
+        case when d1.baslik is not null then d1.baslik else d2.baslik end as ust_baslik,
         r.RoutingTypeId,
         concat('/',d.url".UZANTI.") as url,
         d.title".UZANTI." as title from destinations d
                 INNER JOIN Routing r on r.EntityId= d.id and r.RoutingTypeId = 'ProductDestination' and site = ".SITE."
+                LEFT JOIN destinations d2 ON d2.id = d.cat
+                LEFT JOIN destinations d1 ON d1.id = d2.cat
          where d.favori".UZANTI."=1 and  d.aktif=1  order by d.siralama asc
         ");
         $query->execute();

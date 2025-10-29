@@ -117,7 +117,7 @@ class BlogList
     {
         global $db;
 
-        $query = $db->prepare(SQLLANG."select id,baslik".UZANTI." as baslik,title".UZANTI." as title ,'/'+url".UZANTI." as url,(select count(h.id) as ContentCount from sayfalar".UZANTI." h where h.aktif=1 and h.blog=1 and h.kategori=blog_kategorileri.id) as ContentCount from blog_kategorileri where aktif=1 order by siralama");
+        $query = $db->prepare(SQLLANG."select id,resim,baslik".UZANTI." as baslik,title".UZANTI." as title ,'/'+url".UZANTI." as url,(select count(h.id) as ContentCount from sayfalar".UZANTI." h where h.aktif=1 and h.blog=1 and h.kategori=blog_kategorileri.id) as ContentCount from blog_kategorileri where aktif=1 order by siralama");
         $query->execute();
         $json = $query->fetchAll(PDO::FETCH_ASSOC);
 
