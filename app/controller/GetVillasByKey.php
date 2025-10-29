@@ -50,6 +50,7 @@ if (get("key")=="vitrin"){
         "RateId"=>Rate::GetLastRate()
     ]);
     $json = $query->fetchAll(PDO::FETCH_ASSOC);
+
 }else if (get("key")=="firsat"){
     $query = $db->prepare($sql." and h.firsat".UZANTI."=1 order by h.siralama asc ");
     $query->execute([
@@ -70,7 +71,7 @@ if (get("key")=="vitrin"){
     $query = new Query();
     $query->setTop(10);
     $query->setQuery("Product");
-    $query->addParam("and h.vitrin=1 and  h.kategori2=".$explode[1]);
+    $query->addParam(" and (','+replace(h.kategori,' ','')+',' like '%,".$explode[1].",%' or h.emlak_tipi=".$explode[1].") ");
     $json = $query->run();
 }else if (substr(get("key"),0,8)=="similar_"){
     $explode = explode("_",get("key"));
