@@ -149,6 +149,21 @@ class Home
 
         $query = $db->prepare("
         select top 10 d.baslik".UZANTI." as baslik,d.id,
+         (select count(h.id) as total
+        from homes h
+                 inner join destinations d3 on d3.id = h.emlak_bolgesi
+                 inner join destinations d2 on d2.id = d3.cat
+                 inner join destinations d1 on d1.id = d2.cat
+                 inner join rate r on r.CurrencyName = h.doviz
+                 left join kanun7464 kanun on kanun.homeId = h.id
+                 inner join tip t on t.id = h.emlak_tipi
+        where h.aktif = 1
+          and d3.aktif = 1
+          and isnull(kanun.gavel, 0) = 0
+          and d2.aktif = 1
+          and t.aktif = 1
+          and d1.aktif = 1
+          and d.id in (d1.id, d2.id, d3.id))                              as emlakCount,
         replace(replace(replace(isnull(d.resim".UZANTI.",''),' ','-'),'ı','i'),N'ş','s') as resim,
         r.EntityId,
         case when d1.baslik is not null then d1.baslik else d2.baslik end as ust_baslik,
@@ -162,6 +177,9 @@ class Home
         ");
         $query->execute();
 
+        $destinations = $query->fetchAll(PDO::FETCH_ASSOC);
+
+
         $result["ProductDestinations"]=array_map(function($item){
             $row = new Query();
             $row->setTop(1);
@@ -172,7 +190,7 @@ class Home
             $item["Product"]=$a;
 
             return $item;
-        },$query->fetchAll(PDO::FETCH_ASSOC));
+        },$destinations);
 
 
 

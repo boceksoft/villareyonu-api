@@ -40,7 +40,7 @@ foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $item) {
         $json["data"][] = $item;
         continue;
     }else if($item["id"]=="10"){
-        $sql = "select id,baslik as name,title,'/'+url as url,case when id=5 then 1 else 0 end as nofollow from sayfalar".UZANTI." where aktif=1 and blog=1 and favori=1 order by siralama asc";
+        $sql = "select id,baslik as name,title,'/'+url as url,case when id=5 then 1 else 0 end as nofollow from sayfalar".UZANTI." where aktif=1 and blog=1  order by siralama asc";
     }else{
         $sql = "select id,baslik as name,title,'/'+url as url,case when id=5 then 1 else 0 end as nofollow from sayfalar".UZANTI." where aktif=1 and cat=".$item["id"]."  order by siralama asc";
     }

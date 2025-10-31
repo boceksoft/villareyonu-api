@@ -7,7 +7,7 @@ $json = [];
 
 
 $sql = "select top 10 h.id,h.ribbon".UZANTI." as ribbon,h.ribbon2".UZANTI." as ribbon2,h.kisi,h.yatak_odasi,h.banyo,h.title".UZANTI." as title,'/'+h.url".UZANTI." as url,h.siralama,
-       dbo.FnRandomSplit(h.resim,',') as image,h.baslik".UZANTI." as name,d2.baslik".UZANTI." as destination,fiyatlar.*,ToC.Symbol,d2.baslik".UZANTI." as ilce,
+       dbo.FnRandomSplit(h.resim,',') as image,h.baslik".UZANTI." as name,h.evkodu,d2.baslik".UZANTI." as destination,fiyatlar.*,ToC.Symbol,d2.baslik".UZANTI." as ilce,
        Routing.RoutingId,CH.BookableDirectly,
 Routing.EntityId,yorumlar.*
 from homes h
