@@ -137,8 +137,12 @@ class Home
         }
 
 
+        if (SITE == 2){
+            $result["Banners"]=Page::GetByCat(592,"/");
+        }else{
+            $result["Banners"]=Page::GetByCat(496,"/");
+        }
 
-        $result["Banners"]=Page::GetByCat(496,"/");
 
         $result["rez_tel"] = $qsql["rez_tel"];
 
